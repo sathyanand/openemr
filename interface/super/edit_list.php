@@ -227,6 +227,25 @@ function writeOptionLine($option_id, $title, $seq, $default, $value, $mapping=''
     echo "</td>\n";
   }
 
+  // Address book categories use option_value to flag category as a
+  // person-centric vs company-centric vs indifferent.
+  //
+  else if ($list_id == 'abook_type') {
+    echo "  <td align='center' class='optcell'>";
+    echo "<select name='opt[$opt_line_no][value]' class='optin'>";
+    foreach (array(
+      1 => xl('Unassigned'),
+      2 => xl('Person'),
+      3 => xl('Company'),
+    ) as $key => $desc) {
+      echo "<option value='$key'";
+      if ($key == $value) echo " selected";
+      echo ">" . htmlspecialchars($desc) . "</option>";
+    }
+    echo "</select>";
+    echo "</td>\n";
+  }
+
   // IPPF includes the ability to map each list item to a "master" identifier.
   // Sports teams use this for some extra info for fitness levels.
   //
@@ -337,7 +356,7 @@ function writeCTLine($ct_array) {
   echo ctGenCell($opt_line_no, $ct_array, 'ct_just', 4, 15,
     xl('If billing justification is used enter the name of the diagnosis code type.'));
   echo ctGenCell($opt_line_no, $ct_array, 'ct_mask', 6,  9,
-    xl('Specifies formatting for codes. # = digit, * = any character. Empty if not used.'));
+    xl('Specifies formatting for codes. # = digit, @ = alpha, * = any character. Empty if not used.'));
   echo ctGenCBox($opt_line_no, $ct_array, 'ct_fee',
     xl('Are fees charged for this type?'));
   echo ctGenCBox($opt_line_no, $ct_array, 'ct_rel',
@@ -584,7 +603,7 @@ while ($row = sqlFetchArray($res)) {
   <td><b><?php xl('Effectiveness','e'); ?></b></td>
 <?php } else if ($list_id == 'fitness') { ?>
   <td><b><?php xl('Color:Abbr','e'); ?></b></td>
-<?php } else if ($list_id == 'adjreason') { ?>
+<?php } else if ($list_id == 'adjreason' || $list_id == 'abook_type') { ?>
   <td><b><?php xl('Type','e'); ?></b></td>
 <?php } if ($GLOBALS['ippf_specific']) { ?>
   <td><b><?php xl('Global ID','e'); ?></b></td>

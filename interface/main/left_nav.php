@@ -151,9 +151,7 @@
  $tmp = acl_check('patients', 'demo');
  $disallowed['new'] = !($tmp == 'write' || $tmp == 'addonly');
 
-if ( isset ($GLOBALS['hylafax_server']) && isset ($GLOBALS['scanner_output_directory']) ) {
-    $disallowed['fax'] = !($GLOBALS['hylafax_server'] || $GLOBALS['scanner_output_directory']);
-}
+ $disallowed['fax'] = !($GLOBALS['enable_hylafax'] || $GLOBALS['enable_scanner']);
 
  $disallowed['ros'] = !$GLOBALS['athletic_team'];
 
@@ -468,18 +466,23 @@ function goHome() {
     top.frames['RBot'].location='messages/messages.php';
 }
 
- //
+ // Reference to the search.php window.
  var my_window;
+
+ // Open the search.php window.
  function initFilter() {
     my_window = window.open("../../custom/search.php", "mywindow","status=1");
  }
 
- function processFilter( fieldString ) {
-    document.getElementById('searchFields').value=fieldString;
-    findPatient( "Filter" );
-        my_window.close();
+ // This is called by the search.php (Filter) window.
+ function processFilter(fieldString, serviceCode) {
+  var f = document.forms[0];
+  document.getElementById('searchFields').value = fieldString;
+  f.search_service_code.value = serviceCode;
+  findPatient("Filter");
+  f.search_service_code.value = '';
+  my_window.close();
  }
-
 
  // Process the click to find a patient by name, id, ssn or dob.
  function findPatient(findby) {
@@ -981,6 +984,7 @@ if (!empty($reg)) {
       <?php if (acl_check('admin', 'super'    )) genMiscLink('RTop','adm','0',xl('Globals'),'super/edit_globals.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Facilities'),'usergroup/facilities.php'); ?>
       <?php if (acl_check('admin', 'users'    )) genMiscLink('RTop','adm','0',xl('Users'),'usergroup/usergroup_admin.php'); ?>
+      <?php if (acl_check('admin', 'practice' )) genTreeLink('RTop','adb',xl('Addr Book')); ?>
       <?php
 	  // Changed the target URL from practice settings -> Practice Settings - Pharmacy... Dec 09,09 .. Visolve ... This replaces empty frame with Pharmacy window
 	  if (acl_check('admin', 'practice' )) genMiscLink('RTop','adm','0',xl('Practice'),'../controller.php?practice_settings&pharmacy&action=list'); ?>
@@ -1103,7 +1107,6 @@ if (!empty($reg)) {
     <ul>
       <?php genTreeLink('RBot','aun',xl('Authorizations')); ?>
       <?php genTreeLink('RTop','fax',xl('Fax/Scan')); ?>
-      <?php genTreeLink('RTop','adb',xl('Addr Book')); ?>
       <?php genTreeLink('RTop','ort',xl('Order Catalog')); ?>
       <?php if (!$GLOBALS['disable_chart_tracker']) genTreeLink('RTop','cht',xl('Chart Tracker')); ?>
       <?php genTreeLink('RTop','ono',xl('Ofc Notes')); ?>
@@ -1226,6 +1229,7 @@ if (!empty($reg)) {
 
 <input type='hidden' name='findBy' value='Last' />
 <input type="hidden" name="searchFields" id="searchFields"/>
+<input type="hidden" name="search_service_code" value='' />
 
 </form>
 
