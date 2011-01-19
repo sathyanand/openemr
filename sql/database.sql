@@ -113,15 +113,16 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 -- 
 
-INSERT INTO `categories` VALUES (1, 'Categories', '', 0, 0, 17);
+INSERT INTO `categories` VALUES (1, 'Categories', '', 0, 0, 19);
 INSERT INTO `categories` VALUES (2, 'Lab Report', '', 1, 1, 2);
 INSERT INTO `categories` VALUES (3, 'Medical Record', '', 1, 3, 4);
-INSERT INTO `categories` VALUES (4, 'Patient Information', '', 1, 5, 8);
+INSERT INTO `categories` VALUES (4, 'Patient Information', '', 1, 5, 10);
 INSERT INTO `categories` VALUES (5, 'Patient ID card', '', 4, 6, 7);
-INSERT INTO `categories` VALUES (6, 'Advance Directive', '', 1, 9, 16);
-INSERT INTO `categories` VALUES (7, 'Do Not Resuscitate Order', '', 6, 10, 11);
-INSERT INTO `categories` VALUES (8, 'Durable Power of Attorney', '', 6, 12, 13);
-INSERT INTO `categories` VALUES (9, 'Living Will', '', 6, 14, 15);
+INSERT INTO `categories` VALUES (6, 'Advance Directive', '', 1, 11, 18);
+INSERT INTO `categories` VALUES (7, 'Do Not Resuscitate Order', '', 6, 12, 13);
+INSERT INTO `categories` VALUES (8, 'Durable Power of Attorney', '', 6, 14, 15);
+INSERT INTO `categories` VALUES (9, 'Living Will', '', 6, 16, 17);
+INSERT INTO `categories` VALUES (10, 'Patient Photograph', '', 4, 8, 9);
 
 -- --------------------------------------------------------
 
@@ -139,7 +140,7 @@ CREATE TABLE `categories_seq` (
 -- Dumping data for table `categories_seq`
 -- 
 
-INSERT INTO `categories_seq` VALUES (9);
+INSERT INTO `categories_seq` VALUES (10);
 
 -- --------------------------------------------------------
 
@@ -2335,6 +2336,15 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_type', 'insurance', 'Insurance', 10, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_type', 'patient', 'Patient', 20, 0);
 
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists', 'date_master_criteria', 'Date Master Criteria', 33, 1);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'all', 'All', 10, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'today', 'Today', 20, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'this_month_to_date', 'This Month to Date', 30, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'last_month', 'Last Month', 40, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'this_week_to_date', 'This Week to Date', 50, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'this_calendar_year', 'This Calendar Year', 60, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'last_calendar_year', 'Last Calendar Year', 70, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('date_master_criteria', 'custom', 'Custom', 80, 0);
 
 -- --------------------------------------------------------
 
@@ -3477,6 +3487,11 @@ INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES (
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists'   ,'ethnicity','Ethnicity', 1,0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ethnicity', 'hisp_or_latin', 'Hispanic or Latino', 10, 0);
 INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('ethnicity', 'not_hisp_or_latin', 'Not Hispanic or Latino', 10, 0);
+
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('lists'   ,'payment_date','Payment Date', 1,0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'date_val', 'Date', 10, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'post_to_date', 'Post To Date', 20, 0);
+INSERT INTO list_options ( list_id, option_id, title, seq, is_default ) VALUES ('payment_date', 'deposit_date', 'Deposit Date', 30, 0);
 -- --------------------------------------------------------
 
 -- 

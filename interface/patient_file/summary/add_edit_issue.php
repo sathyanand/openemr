@@ -1,5 +1,5 @@
 <?php
-// Copyright (C) 2005-2010 Rod Roark <rod@sunsetsystems.com>
+// Copyright (C) 2005-2011 Rod Roark <rod@sunsetsystems.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -208,9 +208,9 @@ if ($_POST['form_save']) {
   echo "<html><body><script language='JavaScript'>\n";
   if ($info_msg) echo " alert('$info_msg');\n";
 
-  echo " if (parent.refreshIssue) parent.refreshIssue($issue,'$tmp_title');\n";
-  echo " else if (opener) opener.location.reload();\n";
-  echo " else parent.location.reload();\n";
+  echo " var myboss = opener ? opener : parent;\n";
+  echo " if (myboss.refreshIssue) myboss.refreshIssue($issue,'$tmp_title');\n";
+  echo " else myboss.location.reload();\n";
   echo " if (parent.$ && parent.$.fancybox) parent.$.fancybox.close();\n";
   echo " else window.close();\n";
 
@@ -325,6 +325,7 @@ div.section {
   document.getElementById('row_diagnosis'     ).style.display = comdisp;
   document.getElementById('row_occurrence'    ).style.display = comdisp;
   document.getElementById('row_classification').style.display = injdisp;
+  document.getElementById('row_reinjury_id'   ).style.display = injdisp;
   document.getElementById('row_reaction'      ).style.display = alldisp;
   document.getElementById('row_referredby'    ).style.display = (f.form_referredby.value) ? '' : comdisp;
   document.getElementById('row_comments'      ).style.display = (f.form_comments.value  ) ? '' : revdisp;
@@ -454,7 +455,8 @@ function divclick(cb, divid) {
 
 <body class="body_top" style="padding-right:0.5em">
 
-<form method='post' name='theform' action='add_edit_issue.php?issue=<?php echo $issue ?>&thisenc=<?php echo $thisenc ?>'
+<form method='post' name='theform'
+ action='add_edit_issue.php?issue=<?php echo $issue; ?>&thispid=<?php echo $thispid; ?>&thisenc=<?php echo $thisenc; ?>'
  onsubmit='return validate()'>
 
 <table border='0' width='100%'>
@@ -484,7 +486,7 @@ function divclick(cb, divid) {
  <tr id='row_titles'>
   <td valign='top' nowrap>&nbsp;</td>
   <td valign='top'>
-   <select name='form_titles' size='4' onchange='set_text()'>
+   <select name='form_titles' size='<?php echo $GLOBALS['athletic_team'] ? 10 : 4; ?>' onchange='set_text()'>
    </select> <?php xl('(Select one of these, or type your own title)','e'); ?>
   </td>
  </tr>
@@ -654,7 +656,7 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
    </select>
   </td>
  </tr>
- <!--Reaction For Medication Allergy--!>
+ <!-- Reaction For Medication Allergy -->
   <tr id='row_reaction'>
    <td valign='top' nowrap><b><?php echo htmlspecialchars( xl('Reaction') ,ENT_NOQUOTES); ?>:</b></td>
    <td>
@@ -662,7 +664,8 @@ echo generate_select_list('form_medical_type', 'medical_type', $irow['injury_typ
      style='width:100%' title='<?php echo htmlspecialchars(xl('Allergy Reaction'),ENT_QUOTES); ?>' />
    </td>
   </tr>
- <!--End of reaction--!>
+ <!-- End of reaction -->
+
  <tr<?php if ($GLOBALS['athletic_team']) echo " style='display:none;'"; ?> id='row_referredby'>
   <td valign='top' nowrap><b><?php xl('Referred by','e'); ?>:</b></td>
   <td>
